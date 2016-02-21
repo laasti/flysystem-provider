@@ -1,6 +1,6 @@
 {
     "name": "laasti/flysystem-provider",
-    "description": "A league/container service provider for Flysystem.",
+    "description": "A league/container v2 service provider for Flysystem.",
     "license": "MIT",
     "authors": [
         {
@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "league/container": "~1.3",
+        "league/container": "~2.0.3",
         "league/flysystem": "~1.0"
     },
     "require-dev": {

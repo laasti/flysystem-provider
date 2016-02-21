@@ -12,31 +12,13 @@ use League\Flysystem\MountManager;
 class FlysystemProviderTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testNoSystems()
-    {
-        $container = new Container();
-        $this->setExpectedException('RuntimeException');
-        $container->addServiceProvider(new FlysystemProvider);
-
-        $container->get('League\Flysystem\MountManager');
-    }
-
-    public function testBadConfig()
-    {
-        $container = new Container();
-        $this->setExpectedException('RuntimeException');
-        $container->addServiceProvider(new FlysystemProvider);
-        $container['config.flysystem'] = true;
-        $container->get('League\Flysystem\MountManager');
-    }
-
     public function testProvider()
     {
         $container = new Container();
-        $container->add('config.flysystem', [
+        $container->add('config', ['flysystem' => [
             'file' => ['League\Flysystem\Adapter\Local', [__DIR__]],
             'null' => ['League\Flysystem\Adapter\NullAdapter']
-        ]);
+        ]]);
         $container->addServiceProvider(new FlysystemProvider);
         $default = $container->get('League\Flysystem\FilesystemInterface');
         $manager = $container->get('League\Flysystem\MountManager');

@@ -2,12 +2,10 @@
 
 namespace Laasti\FlysystemProvider;
 
-use Exception;
 use League\Container\ServiceProvider;
 use League\Flysystem\MountManager;
-use RuntimeException;
 
-class FlysystemProvider extends ServiceProvider
+class FlysystemProvider extends ServiceProvider\AbstractServiceProvider implements ServiceProvider\BootableServiceProviderInterface
 {
     protected $defaultProvides = [
         'League\Flysystem\MountManager',
@@ -17,8 +15,7 @@ class FlysystemProvider extends ServiceProvider
     public function register()
     {
         $di= $this->getContainer();
-        
-        $adapters = $di['config.flysystem'];
+        $adapters = $this->getConfig();
 
         $first = true;
         foreach ($adapters as $name => $config) {
@@ -46,25 +43,32 @@ class FlysystemProvider extends ServiceProvider
 
     }
 
+    public function boot()
+    {
+        $this->getContainer()->inflector('Laasti\FlysystemProvider\MountManagerAwarerInterface')
+             ->invokeMethod('setMountManager', ['League\Flysystem\MountManager']);
+    }
+
     public function provides($alias = null)
     {
         if (!count($this->provides)) {
             $this->provides = $this->defaultProvides;
-            try {
-                $adapters = $this->getContainer()['config.flysystem'];
-
-                if (!is_array($adapters) || count($adapters) === 0) {
-                    throw new Exception();
-                }
-            } catch (Exception $e) {
-                throw new RuntimeException('To use FlysystemProvider, you must add an array of adapters to the container using the key "config.flysystem".');
-            }
-            $adapterNames = array_keys($adapters);
+            $adapterNames = array_keys($this->getConfig());
             foreach ($adapterNames as $name) {
                 $this->provides[] = 'flysystem.adapter.' . $name;
             }
         }
 
         return parent::provides($alias);
+    }
+
+    protected function getConfig()
+    {
+        $di = $this->getContainer();
+        if ($di->has('config') && isset($di->get('config')['flysystem'])) {
+            return $di->get('config')['flysystem'];
+        }
+
+        return [];
     }
 }

@@ -41,7 +41,7 @@ $tempAdapter = $container->get('flysystem.adapter.temp');
 
 ## History
 
-See CHANGELOG.md for more information.
+See Github's releases or tags
 
 ## Credits
 
