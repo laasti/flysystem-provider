@@ -1,52 +1,81 @@
-# Laasti/flysystem-provider
+# Laasti / Flysystem Service Provider
 
-## Installation
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
+[![Total Downloads][ico-downloads]][link-downloads]
+
+This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
+PSRs you support to avoid any confusion with users and contributors.
+
+## Structure
+
+If any of the following are applicable to your project, then the directory structure should follow industry best practises by being named the following.
 
 ```
-composer require laasti/flysystem-provider
+bin/        
+config/
+src/
+tests/
+vendor/
+```
+
+
+## Install
+
+Via Composer
+
+``` bash
+$ composer require laasti/flysystem-provider
 ```
 
 ## Usage
 
-```php
+``` php
+$skeleton = new League\Skeleton();
+echo $skeleton->echoPhrase('Hello, League!');
+```
 
-$container = new League\Container\Container;
-$container->addServiceProvider('Laasti\FlysystemProvider\FlysystemProvider');
-//The first defined adapter is used as the default for League\Flysystem\FilesystemInterface
-$container->add('config.flysystem', [
-    //the first item in array is the adapter class, the second is the adapter's constructor parameters
-    'upload' => ['League\Flysystem\Adapter\Local', ['your-uploads-directory']],
-    'temp' => ['League\Flysystem\Adapter\Local', ['your-temp-directory']],
-    //see League/Flysystem's documentation for more adapters
-]);
+## Change log
 
-$manager = $container->get('League\Flysystem\MountManager');
-$manager->read('upload://path-to-file.txt);
-//or get the default filesystem
-$filesystem = $container->get('League\Flysystem\FilesystemInterface');
-//or get a filesystem by its name from the container
-$tempFiles = $container->get('flysystem.filesystem.temp');
-//or an adapter
-$tempAdapter = $container->get('flysystem.adapter.temp');
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
+## Testing
+
+``` bash
+$ composer test
 ```
 
 ## Contributing
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
 
-## History
+## Security
 
-See Github's releases or tags
+If you discover any security related issues, please email contact@nebulousweb.com instead of using the issue tracker.
 
 ## Credits
 
-Author: Sonia Marquette (@nebulousGirl)
+- [Sonia Marquette][link-author]
+- [All Contributors][link-contributors]
 
 ## License
 
-Released under the MIT License. See LICENSE.txt file.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+[ico-version]: https://img.shields.io/packagist/v/laasti/flysystem-provider.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/laasti/flysystem-provider/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/laasti/flysystem-provider.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/laasti/flysystem-provider.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/laasti/flysystem-provider.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/laasti/flysystem-provider
+[link-travis]: https://travis-ci.org/laasti/flysystem-provider
+[link-scrutinizer]: https://scrutinizer-ci.com/g/laasti/flysystem-provider/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/laasti/flysystem-provider
+[link-downloads]: https://packagist.org/packages/laasti/flysystem-provider
+[link-author]: https://github.com/nebulousGirl
+[link-contributors]: ../../contributors

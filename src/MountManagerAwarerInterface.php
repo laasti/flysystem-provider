@@ -14,5 +14,4 @@ interface MountManagerAwareInterface
      * @param \League\Flysystem\MountManager $manager
      */
     public function setMountManager(\League\Flysystem\MountManager $manager);
-
 }
