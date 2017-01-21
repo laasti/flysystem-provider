@@ -9,17 +9,6 @@ trait MountManagerAwareTrait
      * var \League\Flysystem\MountManager
      */
     protected $mountManager;
-    
-    /**
-     * Set Flysystem Mount Manager
-     * @param \League\Flysystem\MountManager $mountManager
-     * @return \League\Flysystem\MountManager
-     */
-    public function setMountManager(\League\Flysystem\MountManager $mountManager)
-    {
-        $this->mountManager = $mountManager;
-        return $this->mountManager;
-    }
 
     /**
      * Get Translator instance
@@ -30,4 +19,14 @@ trait MountManagerAwareTrait
         return $this->mountManager;
     }
 
+    /**
+     * Set Flysystem Mount Manager
+     * @param \League\Flysystem\MountManager $mountManager
+     * @return \League\Flysystem\MountManager
+     */
+    public function setMountManager(\League\Flysystem\MountManager $mountManager)
+    {
+        $this->mountManager = $mountManager;
+        return $this->mountManager;
+    }
 }

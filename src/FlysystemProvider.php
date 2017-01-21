@@ -14,24 +14,25 @@ class FlysystemProvider extends ServiceProvider\AbstractServiceProvider implemen
 
     public function register()
     {
-        $di= $this->getContainer();
+        $di = $this->getContainer();
         $adapters = $this->getConfig();
 
         $first = true;
         foreach ($adapters as $name => $config) {
             list($adapterClass, $adapterArgs) = $config + [null, []];
             $di->add('flysystem.adapter.' . $name, $adapterClass, true)->withArguments($adapterArgs);
-            $di->add('flysystem.filesystem.' . $name, 'League\Flysystem\Filesystem', true)->withArguments(['flysystem.adapter.' . $name]);
+            $di->add('flysystem.filesystem.' . $name, 'League\Flysystem\Filesystem',
+                true)->withArguments(['flysystem.adapter.' . $name]);
 
             if ($first) {
-                $di->add('League\Flysystem\FilesystemInterface', function() use ($di, $name) {
+                $di->add('League\Flysystem\FilesystemInterface', function () use ($di, $name) {
                     return $di->get('flysystem.filesystem.' . $name);
                 }, true);
                 $first = false;
             }
         }
 
-        $di->add('League\Flysystem\MountManager', function() use ($di, $adapters) {
+        $di->add('League\Flysystem\MountManager', function () use ($di, $adapters) {
             $adapterNames = array_keys($adapters);
             $adaptersInstances = [];
             foreach ($adapterNames as $name) {
@@ -40,13 +41,22 @@ class FlysystemProvider extends ServiceProvider\AbstractServiceProvider implemen
 
             return new MountManager($adaptersInstances);
         }, true);
+    }
 
+    protected function getConfig()
+    {
+        $di = $this->getContainer();
+        if ($di->has('config') && isset($di->get('config')['flysystem'])) {
+            return $di->get('config')['flysystem'];
+        }
+
+        return [];
     }
 
     public function boot()
     {
         $this->getContainer()->inflector('Laasti\FlysystemProvider\MountManagerAwarerInterface')
-             ->invokeMethod('setMountManager', ['League\Flysystem\MountManager']);
+            ->invokeMethod('setMountManager', ['League\Flysystem\MountManager']);
     }
 
     public function provides($alias = null)
@@ -60,15 +70,5 @@ class FlysystemProvider extends ServiceProvider\AbstractServiceProvider implemen
         }
 
         return parent::provides($alias);
-    }
-
-    protected function getConfig()
-    {
-        $di = $this->getContainer();
-        if ($di->has('config') && isset($di->get('config')['flysystem'])) {
-            return $di->get('config')['flysystem'];
-        }
-
-        return [];
     }
 }
